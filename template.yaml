@@ -2,7 +2,9 @@ AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: Test template
 
-# Globals:
+Globals:
+  Api:
+    EndpointConfiguration: REGIONAL
 
 # Conditions:
 
@@ -23,3 +25,21 @@ Resources:
           Properties:
             Path: /test
             Method: get
+  
+  ImagesBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        !Join ["-", ["images-bucket", !Ref "AWS::StackName"]]
+      AccessControl: Private
+      PublicAccessBlockConfiguration:
+        IgnorePublicAcls: true
+        BlockPublicPolicy: true
+        BlockPublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
