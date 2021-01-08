@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Test template
+
+# Globals:
+
+# Conditions:
+
+# Parameters:
+
+Resources:
+  TestLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./dist
+      Handler: TestLambda.handler
+      Runtime: nodejs12.x
+      Timeout: 20
+      MemorySize: 128
+      Events:
+        Test:
+          Type: Api
+          Properties:
+            Path: /test
+            Method: get
