@@ -2,7 +2,7 @@ const path = require("path");
 
 module.exports = {
   entry: {
-    TestLambda: "./src/Application/Handlers/test.ts"
+    AnalyzeImage: "./src/Application/Handlers/AnalyzeImageHandler.ts"
   },
   resolve: {
     extensions: [".ts", ".js", ".json"]

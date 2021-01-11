@@ -11,20 +11,23 @@ Globals:
 # Parameters:
 
 Resources:
-  TestLambda:
+  AnalyzeImage:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ./dist
-      Handler: TestLambda.handler
+      Handler: AnalyzeImage.handler
       Runtime: nodejs12.x
-      Timeout: 20
+      Timeout: 30
       MemorySize: 128
       Events:
         Test:
           Type: Api
           Properties:
-            Path: /test
+            Path: /analyze/{imageName}
             Method: get
+      Environment:
+        Variables:
+          IMAGES_BUCKET: !Ref ImagesBucket
   
   ImagesBucket:
     Type: AWS::S3::Bucket

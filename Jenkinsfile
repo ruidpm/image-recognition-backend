@@ -49,5 +49,5 @@ def getRepoName() {
 }
 
 def getGitBranchName() {
-    return scm.branches[0].name
+    scm.branches[0].name
 }
