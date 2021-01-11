@@ -1,31 +1,23 @@
 import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
-import { Rekognition } from "aws-sdk";
-import getEnvironmentVariable from "../utils/getEnvironmentVariable";
-
-const bucket = getEnvironmentVariable("IMAGES_BUCKET");
+import { requestTypes } from "../../Domain/Interfaces/RekognitionInterfaces";
+import { analyze } from "../../Infrastructure/RekognitionRepository";
 
 export default async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
   const imageName = event.pathParameters?.imageName;
 
-  const client = new Rekognition();
-  const params = {
-    Image: {
-      S3Object: {
-        Bucket: bucket,
-        Name: imageName
-      }
-    }
-  }
-
-  let result: Rekognition.DetectFacesResponse | undefined;
+  let result;
   try {
-    result = await client.detectFaces(params).promise();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    result = Promise.all([await analyze(imageName!, requestTypes.detectFaces), await analyze(imageName!, requestTypes.recognizeCelebrities)]);
   } catch (error) {
-    console.log(JSON.stringify(error))
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error })
+    };
   }
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ imageName, result })
+    body: JSON.stringify({ result })
   };
 }
