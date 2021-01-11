@@ -19,6 +19,9 @@ Resources:
       Runtime: nodejs12.x
       Timeout: 30
       MemorySize: 128
+      Policies:
+        - AmazonRekognitionFullAccess
+        - AmazonS3ReadOnlyAccess
       Events:
         Test:
           Type: Api
