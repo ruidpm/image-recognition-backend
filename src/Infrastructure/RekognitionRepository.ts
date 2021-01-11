@@ -16,6 +16,7 @@ export const analyze = async (imageName: string, analyzeFunction: Function) => {
   try {
     return await analyzeFunction(params).promise();
   } catch (error) {
+    console.log(JSON.stringify(error))
     throw error;
   }
 }
