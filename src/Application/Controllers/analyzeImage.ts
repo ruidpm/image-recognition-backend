@@ -1,6 +1,5 @@
 import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
-import { requestTypes } from "../../Domain/Interfaces/RekognitionInterfaces";
-import { analyze } from "../../Infrastructure/RekognitionRepository";
+import { detectFaces } from "../../Infrastructure/RekognitionRepository";
 
 export default async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
   const imageName = event.pathParameters?.imageName;
@@ -8,7 +7,7 @@ export default async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> =>
   let result;
   try {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    result = Promise.all([await analyze(imageName!, requestTypes.detectFaces)]);
+    result = await detectFaces(imageName!);
   } catch (error) {
     return {
       statusCode: 500,
