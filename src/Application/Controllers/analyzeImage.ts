@@ -7,7 +7,7 @@ export default async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> =>
   let result: unknown;
   try {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    result = Promise.all([await detectFaces(imageName!), await recognizeCelebrities(imageName!)]);
+    result = await detectFaces(imageName!);
   } catch (error) {
     return {
       statusCode: 500,
