@@ -1,13 +1,13 @@
 import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
-import { detectFaces } from "../../Infrastructure/RekognitionRepository";
+import { detectFaces, recognizeCelebrities } from "../../Infrastructure/RekognitionRepository";
 
 export default async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
   const imageName = event.pathParameters?.imageName;
 
-  let result;
+  let result: unknown;
   try {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    result = await detectFaces(imageName!);
+    result = Promise.all([await detectFaces(imageName!), await recognizeCelebrities(imageName!)]);
   } catch (error) {
     return {
       statusCode: 500,
