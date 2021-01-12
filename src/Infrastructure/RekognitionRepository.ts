@@ -22,7 +22,7 @@ const wrapper = async (imageName: string, func: any) => {
 }
 
 export const detectFaces = async (imageName: string): Promise<DetectFacesResponse> => 
-  await wrapper(imageName, client.detectFaces);
-  
+  await wrapper(imageName, client.detectFaces.bind(client));
+
 export const recognizeCelebrities = async (imageName: string): Promise<RecognizeCelebritiesResponse> =>
-  await wrapper(imageName, client.recognizeCelebrities);
+  await wrapper(imageName, client.recognizeCelebrities.bind(client));
