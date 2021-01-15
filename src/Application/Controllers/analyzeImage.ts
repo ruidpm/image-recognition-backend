@@ -13,9 +13,9 @@ export default async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> =>
   }
   
   const imageName = event.pathParameters.imageName;
-  const { analyze } = event.queryStringParameters;
-  const analyzeParameters = analyze?.split(",");
-  const requestPromises = analyzeParameters?.filter(parameter => 
+  const { detect } = event.queryStringParameters;
+  const detectParameters = detect?.split(",");
+  const requestPromises = detectParameters?.filter(parameter => 
     //@ts-ignore
     queryParameterToRequestMapper[parameter])
     .map(async (parameter) => 
