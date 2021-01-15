@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
-import queryParameterToRequestMapper from "../../Infrastructure/utils/queryParameterToRequestMapper";
+import { queryParameterToRequestMapper } from "../../Infrastructure/utils/queryParameterToRequestMapper";
 import createApiResponse from "../utils/createApiResponse";
 
 export default async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
@@ -16,10 +16,8 @@ export default async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> =>
   const { detect } = event.queryStringParameters;
   const detectParameters = detect?.split(",");
   const requestPromises = detectParameters?.filter(parameter => 
-    //@ts-ignore
     queryParameterToRequestMapper[parameter])
-    .map(async (parameter) => 
-    //@ts-ignore
+    .map(async (parameter) =>
       await queryParameterToRequestMapper[parameter](imageName)
     );
 
