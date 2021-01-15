@@ -15,15 +15,17 @@ export default async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> =>
   const imageName = event.pathParameters.imageName;
   const { analyze } = event.queryStringParameters;
   const analyzeParameters = analyze?.split(",");
-  const requestPromises = analyzeParameters?.map(async (parameter) => {
+  //@ts-ignore
+  const requestPromises = analyzeParameters?.reduce(async (acc, curr) => {
     //@ts-ignore
-    if (queryParameterToRequestMapper[parameter]) {
+    if (queryParameterToRequestMapper[curr]) {
       //@ts-ignore
-      return await queryParameterToRequestMapper[parameter](imageName);
+      acc.push(await queryParameterToRequestMapper[curr](imageName));
     }
-  });
+    return acc;
+  }, []);
 
-  if (!requestPromises) {
+  if (!requestPromises?.length) {
     return createApiResponse(400, { error: "No valid request parameters" })
   }
 
