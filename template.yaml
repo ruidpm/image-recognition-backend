@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
-Description: Test template
+Description: Image Recognition Backend
 
 Globals:
   Api:
@@ -23,7 +23,7 @@ Resources:
         - AmazonRekognitionFullAccess
         - AmazonS3ReadOnlyAccess
       Events:
-        Test:
+        AnalyzeImage:
           Type: Api
           Properties:
             Path: /analyze/{imageName}

@@ -1,22 +1,38 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
-import { detectFaces, recognizeCelebrities } from "../../Infrastructure/RekognitionRepository";
+import queryParameterToRequestMapper from "../../Infrastructure/utils/queryParameterToRequestMapper";
+import createApiResponse from "../utils/createApiResponse";
 
 export default async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
-  const imageName = event.pathParameters?.imageName;
+  if (!event.queryStringParameters) {
+    return createApiResponse(400, { error: "Malformed request, missing query parameters" })
+  }
+
+  if (!event.pathParameters?.imageName) {
+    return createApiResponse(400, { error: "Malformed request, missing image name" })
+  }
+  
+  const imageName = event.pathParameters.imageName;
+  const { analyze } = event.queryStringParameters;
+  const analyzeParameters = analyze?.split(",");
+  const requestPromises = analyzeParameters?.map(async (parameter) => {
+    //@ts-ignore
+    if (queryParameterToRequestMapper[parameter]) {
+      //@ts-ignore
+      return await queryParameterToRequestMapper[parameter](imageName);
+    }
+  });
+
+  if (!requestPromises) {
+    return createApiResponse(400, { error: "No valid request parameters" })
+  }
 
   let result: unknown;
   try {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    result = await Promise.all([await detectFaces(imageName!), await recognizeCelebrities(imageName!)]);
+    result = await Promise.all(requestPromises);
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error })
-    };
+    return createApiResponse(500, { error })
   }
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ result })
-  };
+  return createApiResponse(200, { result })
 }

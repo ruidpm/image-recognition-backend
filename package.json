@@ -1,8 +1,6 @@
 {
-  "name": "aws",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "image-recognition-backend",
+  "version": "0.0.1",
   "scripts": {
     "build": "webpack",
     "build:watch": "webpack --watch",

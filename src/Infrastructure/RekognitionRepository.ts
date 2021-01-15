@@ -1,6 +1,6 @@
 import getEnvironmentVariable from "../Application/utils/getEnvironmentVariable";
 import { Rekognition } from "aws-sdk"
-import { DetectFacesResponse, RecognizeCelebritiesResponse } from "aws-sdk/clients/rekognition";
+import { DetectFacesResponse, DetectTextResponse, RecognizeCelebritiesResponse } from "aws-sdk/clients/rekognition";
 
 const client = new Rekognition();
 const bucket = getEnvironmentVariable("IMAGES_BUCKET");
@@ -26,3 +26,6 @@ export const detectFaces = async (imageName: string): Promise<DetectFacesRespons
 
 export const recognizeCelebrities = async (imageName: string): Promise<RecognizeCelebritiesResponse> =>
   await wrapper(imageName, client.recognizeCelebrities.bind(client));
+
+export const detectText = async (imageName: string): Promise<DetectTextResponse> =>
+  await wrapper(imageName, client.detectText.bind(client));
