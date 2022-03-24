@@ -1,5 +1,5 @@
 def region = "eu-west-1"
-def repoName = getRepoName()
+def stackName = getRepoName() + "-" + getGitBranchName()
 
 pipeline {
     agent any
@@ -33,10 +33,10 @@ pipeline {
                         --template-file template.yaml \
                         --output-template-file packaged.yaml \
                         --s3-bucket ruidpm-deploys \
-                        --s3-prefix ${repoName}"
+                        --s3-prefix ${stackName}"
                 sh "sam deploy \
                         --template-file packaged.yaml \
-                        --stack-name ${repoName} \
+                        --stack-name ${stackName} \
                         --capabilities CAPABILITY_IAM \
                         --no-fail-on-empty-changeset"
             }
@@ -46,4 +46,8 @@ pipeline {
 
 def getRepoName() {
     scm.getUserRemoteConfigs()[0].getUrl().tokenize('/')[3].split("\\.")[0]
+}
+
+def getGitBranchName() {
+    scm.branches[0].name
 }
