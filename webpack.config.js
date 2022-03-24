@@ -2,7 +2,7 @@ const path = require("path");
 
 module.exports = {
   entry: {
-    TestLambda: "./src/Application/Handlers/test.ts"
+    SendSMSLambda: "./src/Application/Handlers/test.ts"
   },
   resolve: {
     extensions: [".ts", ".js", ".json"]

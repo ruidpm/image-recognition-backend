@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Transform: AWS::Serverless-2016-10-31
-Description: Test template
+Transform:
+  - AWS::Serverless-2016-10-31
 
 # Globals:
 
@@ -9,7 +9,7 @@ Description: Test template
 # Parameters:
 
 Resources:
-  TestLambda:
+  SendSMSLambda:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ./dist
@@ -17,9 +17,27 @@ Resources:
       Runtime: nodejs14.x
       Timeout: 30
       MemorySize: 128
+      Policies:
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt SMSNotificationTopic.TopicName
+      Environment:
+        Variables:
+          SMS_TOPIC: !Ref SMSNotificationTopic
       Events:
         Test:
           Type: Api
           Properties:
-            Path: /test
-            Method: get
+            Path: /send-sms
+            Method: post
+
+  SMSNotificationTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: "SMS Notification Topic"
+
+  SendSMSSNSSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref SMSNotificationTopic
+      Protocol: sms
+      Endpoint: "+351934139797"
