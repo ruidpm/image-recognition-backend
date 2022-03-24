@@ -14,8 +14,8 @@ Resources:
     Properties:
       CodeUri: ./dist
       Handler: TestLambda.handler
-      Runtime: nodejs12.x
-      Timeout: 20
+      Runtime: nodejs14.x
+      Timeout: 30
       MemorySize: 128
       Events:
         Test:
