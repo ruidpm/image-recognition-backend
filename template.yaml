@@ -13,7 +13,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ./dist
-      Handler: TestLambda.handler
+      Handler: SendSMSLambda.handler
       Runtime: nodejs14.x
       Timeout: 30
       MemorySize: 128
