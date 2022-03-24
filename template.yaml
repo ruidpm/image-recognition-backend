@@ -41,3 +41,17 @@ Resources:
       TopicArn: !Ref SMSNotificationTopic
       Protocol: sms
       Endpoint: "+351934139797"
+
+  SendSMSSNSSubscription2:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref SMSNotificationTopic
+      Protocol: sms
+      Endpoint: "+351912780128"
+
+  SendSMSSNSSubscription3:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref SMSNotificationTopic
+      Protocol: sms
+      Endpoint: "+351965430945"
