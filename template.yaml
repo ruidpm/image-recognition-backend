@@ -24,7 +24,7 @@ Resources:
         Variables:
           SMS_TOPIC: !Ref SMSNotificationTopic
       Events:
-        Test:
+        SendSMS:
           Type: Api
           Properties:
             Path: /send-sms
