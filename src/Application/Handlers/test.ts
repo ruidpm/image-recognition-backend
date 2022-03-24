@@ -27,6 +27,7 @@ export const handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyRe
   const params: SNS.Types.PublishInput = {
     Message: message,
     TopicArn: topic,
+    Subject: "AW YEAH"
   };
 
 

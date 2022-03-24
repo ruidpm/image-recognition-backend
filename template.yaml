@@ -33,7 +33,7 @@ Resources:
   SMSNotificationTopic:
     Type: AWS::SNS::Topic
     Properties:
-      DisplayName: "SMS Notification Topic"
+      DisplayName: "Workshop"
 
   SendSMSSNSSubscription:
     Type: AWS::SNS::Subscription
@@ -55,3 +55,10 @@ Resources:
       TopicArn: !Ref SMSNotificationTopic
       Protocol: sms
       Endpoint: "+351965430945"
+
+  SendSMSSNSSubscription4:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref SMSNotificationTopic
+      Protocol: sms
+      Endpoint: "+351915799852"
